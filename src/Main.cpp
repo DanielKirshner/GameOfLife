@@ -17,7 +17,7 @@ void print_board(const std::vector<std::vector<int32_t>>& board)
     std::cout << std::endl;
 }
 
-int32_t count_live_neighbors(int32_t i, int32_t j, const std::vector<std::vector<int32_t>>& board)
+size_t count_live_neighbors(int32_t i, int32_t j, const std::vector<std::vector<int32_t>>& board)
 {
     size_t count = 0;
     
@@ -43,19 +43,70 @@ int32_t count_live_neighbors(int32_t i, int32_t j, const std::vector<std::vector
     return count;
 }
 
+void update_board(std::vector<std::vector<int32_t>>& board)
+{
+    if (board.empty())
+    {
+        return;
+    }
+
+    const uint32_t m = board.size();
+    const uint32_t n = board[0].size();
+
+    for (int32_t i = 0; i < m; i++)
+    {
+        for (int32_t j = 0; j < n; j++)
+        {
+            size_t liveNeighbors = count_live_neighbors(i, j, board);
+
+            // "Any live cell with two or three live neighbors remains alive."
+            if (board[i][j] == 1 && (liveNeighbors < 2 || liveNeighbors > 3))
+            {
+                board[i][j] = -1; // Kill
+            }
+            // "Moreover, any dead cell with exactly three live neighbors becomes alive."
+            if (board[i][j] == 0 && liveNeighbors == 3)
+            {
+                board[i][j] = 2; // Revive
+            }
+        }
+    }
+
+    for (int32_t i = 0; i < m; i++)
+    {
+        for (int32_t j = 0; j < n; j++)
+        {
+            if (board[i][j] == 2) 
+            {
+                board[i][j] = 1; // Alive
+            }
+            else if (board[i][j] == -1)
+            {
+                board[i][j] = 0; // Dead
+            }
+        }
+    }
+}
+
 int32_t main()
 {
     try
     {
+        static constexpr size_t CYCLES = 3;
+
         std::vector<std::vector<int32_t>> board = 
         {
-            {1, 1, 0},
-            {1, 0, 1},
-            {1, 0, 1},
-            {0, 0, 1}
+            {1, 1, 1, 1, 0, 1, 1},
+            {1, 0, 1, 0, 1, 1, 0},
+            {1, 0, 0, 0, 0, 1, 0},
+            {0, 0, 1, 0, 0, 1, 0}
         };
 
-        print_board(board);
+        for (size_t cycle = 0; cycle < CYCLES; cycle++)
+        {
+            print_board(board);
+            update_board(board);
+        }
 
         return EXIT_SUCCESS;
     }
