@@ -19,8 +19,14 @@ void print_board(const std::vector<std::vector<int32_t>>& board)
 
 size_t count_live_neighbors(int32_t i, int32_t j, const std::vector<std::vector<int32_t>>& board)
 {
+    // In this function we counts the number of live neighbors for each cell.
+    // It loops for each cell's neighbors, incrementing the count if a neighbor is alive.
+
     size_t count = 0;
     
+    // we define a vector of pair neighbors, which represents the relative coordinates of neighboring cells.
+    // Each pair in the vector represents the offset in row and column values from the current cell.
+
     std::vector<std::pair<int32_t, int32_t>> neighbors = 
     {
         {-1, -1}, {-1, 0}, {-1, 1},
@@ -72,6 +78,7 @@ void update_board(std::vector<std::vector<int32_t>>& board)
         }
     }
 
+    // A loop that converts the values (-1 and 2) to 0 and 1, respectively.
     for (int32_t i = 0; i < m; i++)
     {
         for (int32_t j = 0; j < n; j++)
