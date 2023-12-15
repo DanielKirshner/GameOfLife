@@ -1,5 +1,5 @@
 all:
-	g++ --std=c++17 ./src/Main.cpp
+	g++ --std=c++17 ./src/Main.cpp -o GameOfLife.o
 
 clean:
-	rm *.out
+	rm Game.o
