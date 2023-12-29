@@ -28,7 +28,7 @@ size_t count_live_neighbors(int32_t i, int32_t j, const GameBoard& board)
     // we define a vector of pair neighbors, which represents the relative coordinates of neighboring cells.
     // Each pair in the vector represents the offset in row and column values from the current cell.
 
-    std::vector<std::pair<int32_t, int32_t>> neighbors = 
+    static const std::vector<std::pair<int32_t, int32_t>> neighbors = 
     {
         {-1, -1}, {-1, 0}, {-1, 1},
         {0, -1},           {0, 1},
@@ -47,6 +47,7 @@ size_t count_live_neighbors(int32_t i, int32_t j, const GameBoard& board)
             count++;
         }
     }
+    
     return count;
 }
 
