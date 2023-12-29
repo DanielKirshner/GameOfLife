@@ -1,7 +1,8 @@
 #include <iostream>
-#include <vector>
 
-void print_board(const std::vector<std::vector<int32_t>>& board)
+#include "GameBoard.hpp"
+
+void print_board(const GameBoard& board)
 {
     for (size_t i = 0; i < board.size(); ++i)
     {
@@ -17,7 +18,7 @@ void print_board(const std::vector<std::vector<int32_t>>& board)
     std::cout << std::endl;
 }
 
-size_t count_live_neighbors(int32_t i, int32_t j, const std::vector<std::vector<int32_t>>& board)
+size_t count_live_neighbors(int32_t i, int32_t j, const GameBoard& board)
 {
     // In this function we counts the number of live neighbors for each cell.
     // It loops for each cell's neighbors, incrementing the count if a neighbor is alive.
@@ -27,7 +28,7 @@ size_t count_live_neighbors(int32_t i, int32_t j, const std::vector<std::vector<
     // we define a vector of pair neighbors, which represents the relative coordinates of neighboring cells.
     // Each pair in the vector represents the offset in row and column values from the current cell.
 
-    std::vector<std::pair<int32_t, int32_t>> neighbors = 
+    static const std::vector<std::pair<int32_t, int32_t>> neighbors = 
     {
         {-1, -1}, {-1, 0}, {-1, 1},
         {0, -1},           {0, 1},
@@ -46,10 +47,11 @@ size_t count_live_neighbors(int32_t i, int32_t j, const std::vector<std::vector<
             count++;
         }
     }
+    
     return count;
 }
 
-void update_board(std::vector<std::vector<int32_t>>& board)
+void update_board(GameBoard& board)
 {
     if (board.empty())
     {
@@ -101,7 +103,7 @@ int32_t main()
     {
         static constexpr size_t CYCLES = 3;
 
-        std::vector<std::vector<int32_t>> board = 
+        GameBoard board = 
         {
             {1, 1, 1, 1, 0, 1, 1},
             {1, 0, 1, 0, 1, 1, 0},
